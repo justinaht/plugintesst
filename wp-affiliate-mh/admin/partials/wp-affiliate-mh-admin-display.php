@@ -22,7 +22,6 @@
 
 <script src="<?php echo AFF_URL ?>/admin/js/vue.min.js"></script>
 <script src="<?php echo AFF_URL ?>/admin/js/quasar.umd.min.js"></script>
-<script src="<?php echo AFF_URL ?>/admin/js/vue.js"></script>
 <script src="<?php echo AFF_URL ?>/admin/js/axios.js"></script>
 <script src="<?php echo AFF_URL ?>/admin/js/date2picker.js"></script>
 <script src="<?php echo AFF_URL ?>/admin/js/moment-with-locales.min.js"></script>
@@ -96,6 +95,8 @@
     			  <q-route-tab to="/settings" exact label="Cài đặt"></q-route-tab>
                 <!-- <q-tab @click="openURL('https://docs.google.com/document/d/1zdvGp-tBRtI0GAFxAW7kTKubAdyLScdRn_9cWAaa--8/edit')" exact label="Hướng dẫn"></q-tab> -->
 			    </q-tabs>
+
+		      <q-btn flat round dense icon="whatshot" @click="openURL('https://dominhhai.com')"></q-btn>
 	    </q-toolbar>
 	   
 	 
@@ -297,7 +298,7 @@
          }
        })
 
-      if(router) new Vue({
+      if(router && window?.routerx) new Vue({
       	router,
         el: '#q-app',
         data: function () {

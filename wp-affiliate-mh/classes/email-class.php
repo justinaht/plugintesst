@@ -1,7 +1,7 @@
-<?php 
-
-	class AFF_Email extends AFF_App{
-        
-        
-    }
+<?php 
+
+	class AFF_Email extends AFF_App{
+        
+        
+    }
 ?>

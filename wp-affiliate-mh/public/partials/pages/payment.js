@@ -18,7 +18,7 @@ const template = `
                                     <th class="text-left" width="50px">#</th>
                                     <th class="text-left desktop-only">Tài khoản</th>
                                     <th class="text-left">Số tiền</th>
-                                    <th class="text-left">Chuyển tới</th>
+                                    <th class="text-left">Ngân hàng</th>
                                     <th class="text-left">STK</th>
                                     <th class="text-left">Chủ TK</th>
                                     <th class="text-left">Mô tả</th>

@@ -4,79 +4,15 @@
   <meta name="robots" content="noindex" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta charset="UTF-8">
-	<title>Trang quản lý</title>
+	<title>Trang cộng tác viên</title>
   <?php $favicon = AFF_Config::getConfig('favicon'); if($favicon):?>
   <link rel="icon" type="image/x-icon" href="<?php echo $favicon?>">
   <?php endif?>
-  <style>
-	.lang-header {
-		position: relative;
-		display: inline-block;
-		margin-left: 20px;
-	}
-	.lang-header .init {
-		position: relative;
-		z-index: 888;
-		background-color: #fff;
-		cursor: pointer;
-		text-transform: uppercase;
-		overflow: hidden;
-		padding: 6px 10px;
-		width: 73.56px;
-		border-radius: 3px;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-	.lang-header ul {
-		position: absolute;
-		top: 100%;
-		width: 73.56px;
-		left: 0;
-		background-color: #FFF;
-		margin: 0;
-		padding: 5px 0;
-		box-shadow: rgba(0,0,0,0.15) 0 3px 8px;
-		z-index: 99;
-		display: none;
-		opacity: 0;
-		visibility: hidden;
-		transition: all .3s;
-	}
-	.lang-header ul.open {
-		display: block;
-		opacity: 1;
-		visibility: visible;
-	}
-	.lang-header img {
-		box-shadow: rgba(0,0,0,0.15) 0 3px 8px;
-		margin: 0;
-		vertical-align: middle;
-		display: inline-block;
-		height: auto;
-		margin: 0;
-		border-radius: 3px;
-		width: 33px;
-	}
-	.lang-header li span,
-	.lang-header .init span {
-		display: none;
-	}
-	.lang-header li {
-		text-align: center;
-		padding: 5px 0;
-	}
-	.lang-header .init .icon {
-		display: inline-flex;
-		align-items: center;
-		background-size: 11px;
-		background-repeat: no-repeat;
-		transition: all .3s;
-	}
-  </style>
 </head>
-<?php $user = get_userdata(get_current_user_id()) ?>
 <body>
+
+
+
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css">
 
@@ -84,10 +20,9 @@
 <link href="<?php echo AFF_URL ?>/admin/css/quasar.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="<?php echo AFF_URL ?>/admin/css/date2picker.css">
 <link rel="stylesheet" href="<?php echo AFF_URL ?>/public/css/spa.css">
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+
 <script src="<?php echo AFF_URL ?>/admin/js/vue.min.js"></script>
 <script src="<?php echo AFF_URL ?>/admin/js/quasar.umd.min.js"></script>
-<script src="<?php echo AFF_URL ?>/admin/js/vue.js"></script>
 <script src="<?php echo AFF_URL ?>/admin/js/axios.js"></script>
 <script src="<?php echo AFF_URL ?>/admin/js/date2picker.js"></script>
 <script src="<?php echo AFF_URL ?>/admin/js/moment-with-locales.min.js"></script>
@@ -120,12 +55,8 @@
   .d-none{
     display: none;
   }
-	.page-seller a.q-item[href="#/cong-tac-vien"],
-	.page-seller a.q-item[href="#/banner"],
-	.page-seller a.q-item[href="#/cong-cu"] {
-		display: none;
-	}
 </style>
+<?php $user = get_userdata(get_current_user_id()) ?>
 <script>
     window.quasarConfig = {
       brand: { // this will NOT work on IE 11
@@ -150,45 +81,9 @@
     }
 </script>
 
-<?php 
-$link_courses = '';
-if ( in_array( 'seller', $user->roles, true ) ) {
-	$link_courses = home_url('wp-admin/edit.php?post_type=lp_course');
-}else{
-	$link_courses = home_url(get_theme_mod( 'login_url' ));
-}
-?>
-<?php if($link_courses){ ?>
-<script type="text/javascript">
-	jQuery(document).ready(function($){
-		$(document).on('click', 'a.q-item.q-link', function(e) {
-			var data_href = $(this).attr('href');
-			if(data_href.split('/')[1] == 'khoa-hoc'){
-				location.href = "<?php echo $link_courses; ?>";
-			}
-		});							
-	});
-</script>
-<?php } ?>
-<?php
-	if ( is_plugin_active( 'gtranslate/gtranslate.php' ) ) {
-		$menu_id = 'gt-current-language';
-		$data = get_option('GTranslate');
-		GTranslate::load_defaults($data);
-		$lang_array = $data['native_language_names'] ? json_decode(GTranslate::$lang_array_native_json, true) : GTranslate::$lang_array;
-		$lang_html = '';
-		if(!empty($data['fincl_langs'])){
-			$lang_html .= "<div class='init'><div class='lang-main'>Ngôn ngữ</div><span class='icon'><svg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 285 285'><path d='M282 76.5l-14.2-14.3a9 9 0 0 0-13.1 0L142.5 174.4 30.3 62.2a9 9 0 0 0-13.2 0L3 76.5a9 9 0 0 0 0 13.1l133 133a9 9 0 0 0 13.1 0l133-133a9 9 0 0 0 0-13z' style='fill:%23666'/></svg></span></div>";
-			$lang_html .= '<ul>';
-			foreach($data['fincl_langs'] as $lang) {
-				$lang_item = GTranslate::render_single_item(array('lang' => $lang, 'widget_look' => $data['widget_look'], 'label' => $lang_array[$lang]));
-				$lang_html .= '<li>'. $lang_item .'</li>';
-			}
-			$lang_html .= '</ul>';
-		}
-	}
-?>
-<div id="q-app" class="d-none page-<?php echo $user->roles[0]; ?>">
+
+
+<div id="q-app" class="d-none">
 	
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
@@ -205,7 +100,6 @@ if ( in_array( 'seller', $user->roles, true ) ) {
         <template v-if="$q.platform.is.mobile"> {{page_title}} </template>
         <q-space></q-space>
         <div v-if="configs.user_login != ''">Số dư: {{addCommas(user.balance)}}đ</div>
-		<div class="lang-header"><?php echo $lang_html; ?></div>
       </q-toolbar>
       
     </q-header>
@@ -226,7 +120,6 @@ if ( in_array( 'seller', $user->roles, true ) ) {
               v-if="!nav.hasOwnProperty('link')"
               :to="nav.to"
               class="text-bold"
-			  @click="nav.to"
               exact
               clickable
               :key="nav.to"
@@ -535,13 +428,13 @@ if ( in_array( 'seller', $user->roles, true ) ) {
 
 
   
-  if(router) new Vue({
+  if(router && window?.routerx) new Vue({
       router,
       el: '#q-app',
       data: function() {
           return {
               configs: {},
-              page_title: 'Affiliate',
+              page_title: 'WP Affiliate MH',
               settings: {
 
               },
@@ -613,6 +506,7 @@ if ( in_array( 'seller', $user->roles, true ) ) {
             this.getConfigs().then(res => {
               this.settings = res
               this.navs = this.isNormal() ? route.normal : route.pro
+              
             })
           },
           async logout(){
@@ -639,6 +533,8 @@ if ( in_array( 'seller', $user->roles, true ) ) {
           })
           this.getC();
 
+          
+
           if(!this.configs.user_id && this.$route.path != '/dang-nhap' && this.$route.path != '/dang-ky'){
             this.$router.push('/dang-nhap')
           }
@@ -659,49 +555,6 @@ if ( in_array( 'seller', $user->roles, true ) ) {
     
 
 </script>
-<?php
 
-	if ( is_plugin_active( 'gtranslate/gtranslate.php' ) ) {
-		$menu_id = 'gt-current-language';
-		$data = get_option('GTranslate');
-		GTranslate::load_defaults($data);
-
-		$gt_settings = GTranslate::load_settings($data);
-		$unique_id = wp_rand(10000000, 88888888);
-
-		// remove excess settings based on widget_look to keep front-end code small
-		$old_settings = $gt_settings;
-		$gt_settings = array();
-		$keep_keys = array('default_language', 'languages', 'url_structure', 'native_language_names', 'detect_browser_language', 'flag_style', 'flag_size', 'alt_flags', 'custom_domains', 'custom_css');
-		foreach($keep_keys as $key)
-			if(isset($old_settings[$key]) and $old_settings[$key] !== '')
-				$gt_settings[$key] = $old_settings[$key];
-
-		$base_path = get_site_url(). '/wp-content/plugins/gtranslate';		
-		$gt_settings['flags_location'] = wp_make_link_relative($base_path) . '/flags/';
-		?>
-		<script src="<?php echo $base_path; ?>/js/base.js" data-no-optimize="1" data-no-minify="1" data-gt-orig-url="/cong-tac-vien" data-gt-orig-domain="<?php echo $_SERVER['SERVER_NAME']; ?>" data-gt-widget-id="<?php echo $unique_id; ?>" defer></script>
-		<script id="gt_widget_script_<?php echo $unique_id; ?>-js-before">
-			window.gtranslateSettings = /* document.write */ window.gtranslateSettings || {};window.gtranslateSettings['<?php echo $unique_id; ?>'] = <?php echo json_encode($gt_settings); ?>;
-		</script>
-		<?php
-	}
-?>
-<script type="text/javascript">
-	jQuery(document).ready(function($){
-		var lang_cr = $('.glink.gt-current-lang').html();
-		$(".lang-header").find('.lang-main').html(lang_cr);
-		$(".lang-header").on("click", ".init", function() {
-			$(this).parents(".lang-header").find('ul').addClass('open');
-		});
-		var allOptions = $(".lang-header ul").children('li');
-		$(".lang-header ul").on("click", "li", function() {
-			allOptions.removeClass('selected');
-			$(this).addClass('selected');
-			$(".lang-header").find('.lang-main').html($(this).html());
-			$(this).parents(".lang-header").find('ul').removeClass('open');
-		});						
-	});
-</script>
 </body>
 </html>

@@ -35,9 +35,6 @@ export function changePassword(data) {
 
 }
 
-export function getConfigs(data) {
-  return affApi.post('', jsonToFormData({ action: 'aff_get_configs', data }))
-}
 
 
 export function lost_password(data) {

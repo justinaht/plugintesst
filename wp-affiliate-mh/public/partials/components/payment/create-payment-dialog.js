@@ -20,7 +20,7 @@ const template = `
                         :rules="[val => (parseInt(val) && parseInt(val) > 0) || 'Bạn cần nhập số tiền muốn rút', val => (val.replaceAll(',', '') >= parseInt(settings.aff_min_request)) || 'Số tiền rút tối thiểu cần lớn hơn ' + addCommas(settings.aff_min_request) + 'đ']" />
 
 
-                    <q-select filled v-model="record.bank_info.bank_name" :options="bank_options" label="Chuyển tới" stack-label emit-value map-options class="q-mb-md" :rules="[val => (val !== null && val !== '') || 'Chọn ngân hàng']"/>
+                    <q-select filled v-model="record.bank_info.bank_name" :options="bank_options" label="Ngân hàng" stack-label emit-value map-options class="q-mb-md" :rules="[val => (val !== null && val !== '') || 'Chọn ngân hàng']"/>
                  
                     <q-input filled stack-label v-model="record.bank_info.bank_owner" label="Tên chủ tài khoản" lazy-rules
                         :rules="[val => (val !== null && val !== '') || 'Điền tên chủ tài khoản']" />

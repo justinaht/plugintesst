@@ -94,14 +94,14 @@ const hasWhiteSpace = (s) => {
 }
 
 const route = {
-		pro: [{
+  pro: [{
               label: "Thống kê của bạn",
               to: "/",
               icon: "favorite_border",
               login: false
           },
           {
-              label: "Đơn hàng",
+              label: "Đơn hàng từ CTV",
               to: "/thong-ke-cong-tac-vien",
               icon: "view_in_ar",
               login: false
@@ -127,7 +127,7 @@ const route = {
               login: false
           },
           {
-            label: "Banner",
+            label: "Banner CTV",
             to: "/banner",
             icon: "photo_library",
             login: false
@@ -152,26 +152,6 @@ const route = {
               login: false
           },
           {
-              label: "Đơn hàng",
-              to: "/thong-ke-cong-tac-vien",
-              icon: "view_in_ar",
-              login: false
-          },
-          {
-              label: "Khóa học",
-              to: "/khoa-hoc",
-              icon: "menu_book",
-              login: "all"
-              // children: []
-          },
-          {
-              label: "Cộng tác viên",
-              to: "/cong-tac-vien",
-              icon: "supervisor_account",
-              login: "all"
-              // children: []
-          },
-          {
               label: "Lịch sử số dư",
               to: "/lich-su",
               icon: "fingerprint",
@@ -185,7 +165,7 @@ const route = {
               login: false
           },
           {
-            label: "Banner",
+            label: "Banner CTV",
             to: "/banner",
             icon: "photo_library",
             login: false

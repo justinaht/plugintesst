@@ -140,7 +140,7 @@
 					'link' => get_permalink($id),
 				];
 			}
-			
+
             $order_json = [
 				'order_id' 				=> $order_id,
 				'total'	   				=> $order->get_total(),
@@ -151,67 +151,8 @@
                 'shipping_fee'          => intval($order->get_shipping_total()),
 				'sub_total'             => $order->get_subtotal(),
 			];
-			
-			// check user seller
-			$check_user_seller = false;
-			$product_name = '';
-			$user_seller_id = '';
-			foreach ( $items as $item_seller ) {
-				$product_id = $item_seller->get_product_id();
-				$post_obj   = get_post( $product_id );
-				$post_author = $post_obj->post_author;
-				$user_meta = get_userdata($post_author);
-				if(in_array('seller', $user_meta->roles)){
-					$check_user_seller = true;
-					$user_seller_id = $post_author;
-					$product_name = get_the_title($product_id);
-					break;
-				}
-			}
-			
-			if($check_user_seller){
-				if($user_seller_id > 0){
-					$user_seller = get_userdata($user_seller_id);
-					// Tiền seller = 500 x 30% / 100 = 150
-					$percent_admin_course = LP_Settings::get_option( 'percent_admin_course' );
-					if($percent_admin_course){
-						$percent_admin = LP_Settings::get_option( 'percent_admin_course' );
-					}else{
-						$percent_admin = 30;
-					}
-					$commission_seller = ($order->get_total() * $percent_admin) / 100;
-					$commission_seller_total = ($order->get_total() - $commission_seller) - $data['commission'];
-					$description_seller = '+' . number_format($commission_seller_total) . ' ID đơn hàng #' . $order_id . ' của khóa học "' . $product_name .'"';
-					
-					$record_seller = [
-							'user_id' => $user_seller->ID,
-							'user_ref' => $user_seller->user_login,
-							'user_login' => $user_seller->user_login,
-							'order_id' => $order_id,
-							'order_status' => $order->get_status(),
-							'ref_path' => $ref_path,
-							'ref_product' => $ref_product ? $ref_product : NULL,
-							'ref_coupon' => isset($coupon) ? $ref_coupon . '-' . $coupon['value'] : NULL,
-							'status' => 0,
-							'date' => current_time('mysql'),
-							'total' => $order->get_total(),
-							'commission' => $commission_seller_total,
-							'customer_name' => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
-							'customer_phone' => $order->get_billing_phone(),
-							'description' => $description_seller,
-							'order_json' => json_encode($order_json)
-							
-						];
-					$exist = MH_Query::init(null, self::$table)->where('user_id', $user_seller->ID)->where('order_id', $order_id)->first();
-					
-					if(!$exist){
-						MH_Query::init(null, self::$table)->insert($record_seller);
-					}
-				}
-				
-			}else{
-				$description = '+' . number_format($data['commission']) . ' Hoa hồng của ID đơn hàng ' . $order_id . ' cho cộng tác viên ' . $user->user_login;
-			}
+            
+
             $record = [
                     'user_id' => $user->ID,
                     'user_ref' => $user->user_login,
@@ -227,7 +168,7 @@
                     'commission' => $data['commission'],
                     'customer_name' => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
                     'customer_phone' => $order->get_billing_phone(),
-                    'description' => $description,
+                    'description' => '+' . number_format($data['commission']) . ' Hoa hồng của ID đơn hàng ' . $order_id . ' cho cộng tác viên ' . $user->user_login,
                     'order_json' => json_encode($order_json)
                     
                 ];
@@ -446,6 +387,7 @@
 
                                 
                                 ];
+                                MH_Query::init(null, self::$table)->insert($data);
                             }
                             
                         }
@@ -623,6 +565,13 @@
             return $query;
         }
 
+
+        static function getRankOrder($atts){
+            $atts['range'] = strtoupper($atts['range']);
+            $select = $atts['type'] == 'order' ? 'user_id, count(id) as total, user_login' : 'user_id, sum(total) as total, user_login';
+            $result = MH_Query::init(null, self::$table)->select($select)->where('level', 0)->where('status', 1)->where('order_status', 'completed')->whereRaw("{$atts['range']}(date) = {$atts['range']}(CURRENT_DATE())")->group_by('user_id')->order_by('total', 'DESC')->limit($atts['limit'])->get();
+            return $result;
+        }
         
 
         static function moveOrderToTrash($order_id){

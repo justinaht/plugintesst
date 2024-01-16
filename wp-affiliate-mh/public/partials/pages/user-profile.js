@@ -18,13 +18,15 @@ const template = `
                 <q-input disable filled type="text" v-model="user.user_login" label="Tên đăng nhập *" lazy-rules
                     :rules="[val => (val && val.length > 0) || 'Điền tên tài khoản']" />
         
-                <q-input filled type="text" v-model="user.display_name" label="Tên hiển thị" lazy-rules
+                <q-input  filled type="text" v-model="user.display_name" label="Tên hiển thị" lazy-rules
                     :rules="[val => (val && val.length > 0) || 'Điền tên hiển thị']" />
 
                 
-                <q-input filled type="text" v-model="user.user_phone" label="Số điện thoại *" lazy-rules />
+                <q-input  filled type="text" v-model="user.user_phone" label="Số điện thoại *" lazy-rules :rules="[
+                        val => (val && val.length > 0) || 'Số điện thoại',
+                        val => (val && validatePhone(val)) || 'Số điện thoại bạn nhập không chính xác' ]"/>
         
-                <q-input filled type="email" v-model="user.user_email" label="Email *" lazy-rules :rules="[
+                <q-input  filled type="email" v-model="user.user_email" label="Email *" lazy-rules :rules="[
                                   val => (val && val.length > 0) || 'Điền tên email',
                                   val =>
                                     (val && validateEmail(val)) || 'Định dạng Email không chính xác'
@@ -57,39 +59,17 @@ const template = `
                     </q-card>
             </q-dialog>
         </div>
-		<div class="col-md-6 col-xs-12 text-center card-item">
-			<p class="text-h6 q-mb-md">Cấp độ chiết khấu</p>
-			<div class="level-ck">
-				<div class="row q-col-gutter-sm q-mb-sm" v-for="(level, i) in settings.commission_user_levels" >
-					<template v-if="(i + 1) <= settings.user_level">
-						<div class="col-4">
-							<q-input filled v-model="level.name" label="Tên cấp độ"  stack-label readonly="readonly" />
-						</div>
-						<div class="col-4">
-							<q-input filled v-model="level.income" label="Doanh thu"  stack-label readonly="readonly" />
-						</div>
-						<div class="col-4">
-							<q-input filled v-model="level.commission" label="Chiết khấu %" stack-label readonly="readonly" />
-						</div>
-					</template>
-				</div>
-			</div>
-        </div>
     </div>
 </div>
 `;
-import { updateUserProfile, getUserProfile, changePassword, getConfigs } from '../api/user.js'
+import { updateUserProfile, getUserProfile, changePassword } from '../api/user.js'
 import {  LEVEL_COLOR, validateEmail, validatePhone } from "../constants/constants.js"
 const { RV_CONFIGS } = window 
 export default {
     data: () => ({
         configs: RV_CONFIGS,
         isLoading: true,
-        settings: {
-		  commission_user_levels: [],
-		  aff_reset_level_month: false,
-		  user_level: 4,
-		},
+        settings: {},
         validateEmail,
         validatePhone,
         user: {
@@ -159,4 +139,5 @@ export default {
         this.getData();
         this.$eventBus.$emit('set.page_title', 'Thông tin tài khoản');
     }
+
 }

@@ -7,7 +7,7 @@ const template = `
             <thead>
                 <tr>
                     <th class="text-left" width="50px">ID</th>
-                    <th class="text-left">Tài khoản</th>
+                    <th class="text-left">CTV</th>
                     <th class="text-left">Cấp</th>
                     <th class="text-left">Giá trị</th>
                     <th class="text-left">Hoa hồng</th>

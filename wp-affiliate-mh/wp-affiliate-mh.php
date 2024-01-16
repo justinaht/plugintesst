@@ -8,15 +8,17 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
+ * @link              https://dominhhai.com
  * @since             1.0.1
+ * @package           Wp_Affiliate_Mh
  *
  * @wordpress-plugin
- * Plugin URI:        affiliate
- * Plugin Name:       Affiliate
+ * Plugin URI:        wp-affiliate-mh
+ * Plugin Name:       WP Affiliate MH
  * Description:       Plugin giúp bạn xây dựng hệ thống cộng tác viên bán hàng cho Woocommerce.
  * Version:           1.0.1
- * Author:            DEVN
- * Author URI:        
+ * Author:            Đỗ Minh Hải
+ * Author URI:        https://dominhhai.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       wp-affiliate-mh

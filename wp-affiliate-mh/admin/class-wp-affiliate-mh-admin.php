@@ -278,8 +278,8 @@ class Wp_Affiliate_Mh_Admin {
 		    $u_role =  $user->roles[0];
 		    if($u_role == 'administrator'){
 	    		add_menu_page(
-	    	        __( 'Quản lý Affiliate', 'textdomain' ),
-	    	        'Quản lý Affiliate',
+	    	        __( 'WP Affiliate MH', 'textdomain' ),
+	    	        'WP Affiliate MH',
 	    	        'manage_options',
 	    	        'wp-affiliate-mh',
 	    	        [$this, 'admin_template'],
@@ -289,8 +289,8 @@ class Wp_Affiliate_Mh_Admin {
 		    }
 		    elseif($u_role == 'shop_manager')
 			    add_menu_page(
-			        __( 'Quản lý Affiliate', 'textdomain' ),
-			        'Quản lý Affiliate',
+			        __( 'WP Affiliate MH', 'textdomain' ),
+			        'WP Affiliate MH',
 			        'shop_manager',
 			        'wp-affiliate-mh',
 			        [$this, 'admin_template'],

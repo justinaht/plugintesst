@@ -169,7 +169,7 @@ export default {
             this.filters.user_id = this.configs.user_id 
 
         this.getData();
-        this.$eventBus.$emit('set.page_title', 'Menu đơn hàng');
+        this.$eventBus.$emit('set.page_title', 'Đơn hàng từ CTV');
     }
 
 }

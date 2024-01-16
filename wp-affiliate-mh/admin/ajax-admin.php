@@ -195,6 +195,33 @@
 			wp_send_json( $data );
 		}
 
+		public function aff_update_user_role(){
+			$this->checkPermissionAdmin();
+			$user_id = isset($_POST['user_id']) ? sanitize_text_field($_POST['user_id']) : 0;
+			$role_slug = isset($_POST['role']) ? sanitize_text_field($_POST['role']) : 0;
+			if($user_id && $role_slug){
+				$user = get_user_by('ID', $user_id);
+				$role_whitelist = ['si','ctv', 'subscriber', 'contributor'];
+
+				if(!in_array($user->roles[0], $role_whitelist))
+						MH_Response(false, 'Xin lỗi bạn chỉ có thể thay đổi với tài khoản thường');
+
+
+		        foreach (get_editable_roles() as $key => $role_info) {
+		           $role_name = sanitize_title($role_info['name']);
+		           $user->remove_role($role_name);
+		        }
+
+		        $user->add_role($role_slug);
+		       
+		        wp_update_user(array('ID' => $user_id, 'role' => $role_slug));
+				MH_Response(true, 'Cập nhật thành công');
+
+			}
+			MH_Response(false, 'Có lỗi xảy ra');
+
+		}
+
 		public function aff_assign_commission(){
 			$this->checkPermissionAdmin();
 			$user = isset($_POST['user']) ? sanitize_text_field($_POST['user']) : 0;
@@ -215,9 +242,11 @@
 
 		}
 
-		public function aff_re_commission(){
+		public function aff_re_commission($order_id = ''){
 			$this->checkPermissionAdmin();
 			$id = isset($_POST['id']) ? $_POST['id'] : 0;
+			if($order_id)
+				$id = $order_id;
 			if($id){
 				$user_order = MH_Query::init(null, 'mh_user_order')->where('order_id', $id)->where('status', 0)->where('level', 0)->first();
 				if(!$user_order)

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Trang quản lý</title>
+	<title>Trang cộng tác viên</title>
 </head>
 <body>
 
@@ -388,7 +388,7 @@
       data: function() {
           return {
               configs: {},
-              page_title: 'Affiliate',
+              page_title: 'WP Affiliate MH',
               settings: {
 
               },

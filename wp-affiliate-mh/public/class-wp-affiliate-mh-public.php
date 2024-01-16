@@ -75,13 +75,17 @@ class Wp_Affiliate_Mh_Public {
 		//Addshortcode UserDashboard
 		add_shortcode('aff_user_dashboard', [$this, 'aff_user_dashboard']);
 		add_shortcode('aff_share_link', [$this, 'aff_show_link_single_product']);
+		add_shortcode('aff_share_link_2', [$this, 'copy_affiliate_link_2']);
+		add_shortcode('aff_rank', [$this, 'aff_rank']);
 
 		
 		add_filter( 'woocommerce_account_menu_items', [$this, 'add_custom_menu_item_to_account_menu'], 10 );
 		add_action( 'init', [$this, 'add_custom_endpoint'] );
 		add_action( 'template_redirect', [$this, 'redirect_custom_endpoint_to_custom_page'] );
 		
-
+		//FunnelKit
+		// 1.Change Hook Billing Feilds in checkout page
+		// 2.Hook on adding a new comment for upsell
 	}
 	
 	public function redirect_custom_endpoint_to_custom_page() {
@@ -122,6 +126,11 @@ class Wp_Affiliate_Mh_Public {
 				// $this->view(sanitize_text_field($_GET['ref']));
 		}
 
+	}
+
+	public function aff_rank($atts){
+		$ranks = AFF_User_Order::getRankOrder($atts);
+		return MH_Load_view('/shortcodes/rank.php', ['ranks' => $ranks, 'atts' => $atts], false, false, AFF_PATH);
 	}
 
 	public function aff_show_link_single_product(){
@@ -258,11 +267,16 @@ class Wp_Affiliate_Mh_Public {
 
 
 	public function woocommerce_checkout_order_processed($order_id, $posted_data, $order){
-		$ref_id = get_post_meta($order_id, '_ref_id', true);
-        $ref_path = get_post_meta($order_id, '_ref_path', true);
-        $ref_coupon = get_post_meta($order_id, '_ref_coupon', true);
-        $ref_product = get_post_meta($order_id, '_ref_product', true);
+		// $ref_id = get_post_meta($order_id, '_ref_id', true);
+        // $ref_path = get_post_meta($order_id, '_ref_path', true);
+        // $ref_coupon = get_post_meta($order_id, '_ref_coupon', true);
+        // $ref_product = get_post_meta($order_id, '_ref_product', true);
 
+        $ref_id = $order->get_meta('_ref_id');
+        $ref_path = $order->get_meta('_ref_path');
+        $ref_coupon = $order->get_meta('_ref_coupon');
+        $ref_product = $order->get_meta('_ref_product');
+        
 		// $user = get_user_by('login', 'haihai');
 		$allow_order_self = AFF_Config::getConfig('allow_order_self');
 		$ref_value_is_id = AFF_Config::getConfig('ref_value_is_id');
